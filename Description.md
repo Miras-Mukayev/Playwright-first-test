@@ -5,4 +5,4 @@ I want to create 5 certain Test cases for the give software testing website, whi
 4. compare-products.js: Compare prices/information of 2 products selected
 5. password-reset.js: Reset password
 
-   In the given assignment, i tried to recreate certain tests and investigate primary functionalities of the test websites to get accustomed to PlayWright through Visual Code using TypeScript 
+   In the given assignment, i tried to recreate certain tests and investigate primary functionalities of the test websites to get accustomed to PlayWright through Visual Code using JS
