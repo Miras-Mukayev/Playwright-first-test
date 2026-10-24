@@ -1,3 +1,2 @@
-I AM A LITTLE BIT NOT FINISHED
-I will finish all documentation + notes by 24th 23:59 PM
-
+In my case, AI greatly helped in giving me understanding of the role of each files, as well as providing a good basis for initial test case. Initial login test case helped me to construct the logic for other testcases, such as first opening the website -> select certain button or product -> after that find another object by locator and fill or modify the data and etc.. The main problem was excess suggestions of timeouts that were given as a suggestion by the model after I tried to fix some errors, which I removed in a lot of parts of the code. 
+I also reviewed my code using the AI model. At the 2 points where I was stuck on the timeout when comparing products and registering an account, AI tracked error in my functions steps, which led me to rebuild the testcase after rechecking and tracking generated code from the start on the website. 
