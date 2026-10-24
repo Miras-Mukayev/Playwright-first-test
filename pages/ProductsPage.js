@@ -7,15 +7,21 @@ export class ProductsPage {
   }
 
   async open() {
-    await this.page.goto('https://practicesoftwaretesting.com/');
+    await this.page.goto('https://practicesoftwaretesting.com/', {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
+    });
+
+    // Wait until at least one product is displayed.
+    await this.page.locator('[data-test^="product-"]').first().waitFor({
+      state: 'visible',
+      timeout: 15000,
+    });
   }
 
   async buyProduct() {
-    // Select a product and add it to the cart.
-    await this.page
-      .locator('[data-test="product-01M5MV9TJAEARH5AKSV9ZHHHW1"]')
-      .click();
-
+    // Select the first product currently displayed.
+    await this.page.locator('[data-test^="product-"]').first().click();
     await this.page.locator('[data-test="add-to-cart"]').click();
 
     // Open the cart and proceed to checkout.
@@ -32,7 +38,6 @@ export class ProductsPage {
     // Continue to the address step.
     await this.page.locator('[data-test="proceed-2"]').click();
 
-    
     await this.page.locator('[data-test="country"]').selectOption('KZ');
     await this.page.locator('[data-test="postal_code"]').fill('050010');
     await this.page.locator('[data-test="house_number"]').fill('42');
@@ -43,37 +48,31 @@ export class ProductsPage {
     await this.page.locator('input[placeholder="State *"]').fill('Almaty');
 
     await expect(
-    this.page.locator('[data-test="proceed-3"]')
+      this.page.locator('[data-test="proceed-3"]')
     ).toBeEnabled();
 
     await this.page.locator('[data-test="proceed-3"]').click();
 
-
-    // Select bank transfer and complete its payment details.
-    await this.page
-      .locator('[data-test="payment-method"]')
-      .selectOption('bank-transfer');
-
+    // Select bank transfer and enter payment details.
+    await this.page.locator('[data-test="payment-method"]').selectOption('bank-transfer');
     await this.page.locator('[data-test="bank_name"]').fill('Test Bank');
     await this.page.locator('[data-test="account_name"]').fill('Test Customer');
     await this.page.locator('[data-test="account_number"]').fill('144526');
 
     await this.page.locator('[data-test="finish"]').click();
 
-    // The payment step displays a successful payment message.
     await expect(this.page.locator('body')).toContainText(
-    'Payment was successful'
+      'Payment was successful'
     );
 
     // Confirm the order.
     await this.page.getByText('Confirm', { exact: true }).click();
-    }
+  }
 
   async expectOrderConfirmation() {
     await expect(this.page.locator('body')).toContainText(
-        /order confirmation|order number|thank you|success/i,
-        { timeout: 10000 }
+      /order confirmation|order number|thank you|success/i,
+      { timeout: 10000 }
     );
   }
 }
-    

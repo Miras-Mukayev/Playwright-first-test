@@ -1,35 +1,35 @@
 import { expect } from '@playwright/test';
 
 export class RegisterPage {
+
   constructor(page) {
     this.page = page;
   }
 
-  async open() {
+  async open() { // Find registration page
     await this.page.goto('https://practicesoftwaretesting.com/');
     await this.page.locator('[data-test="nav-sign-in"]').click();
     await this.page.locator('[data-test="register-link"]').click();
   }
 
   
-async register(customer) {
+async register(customer) {  // Fill all necessary data (valid for test register)
   await this.page.locator('[data-test="first-name"]').fill(customer.firstName);
   await this.page.locator('[data-test="last-name"]').fill(customer.lastName);
   await this.page.locator('[data-test="dob"]').fill('1995-06-15');
   await this.page.locator('[data-test="country"]').selectOption('KZ');
-
   await this.page.locator('[data-test="postal_code"]').fill('050010');
   await this.page.locator('[data-test="house_number"]').fill('42');
 
   // Wait for the automatic address lookup to settle.
-  await this.page.waitForTimeout(2000);
+  await this.page.waitForTimeout(3000);
 
-  // Supply address fields directly if they are still empty.
+ /* // Supply address fields directly if they are still empty.
   const street = this.page.locator('[data-test="street"]');
   const city = this.page.locator('[data-test="city"]');
-  const state = this.page.locator('[data-test="state"]');
+  const state = this.page.locator('[data-test="state"]');*/
 
-  if (await street.inputValue() === '') {
+  /*if (await street.inputValue() === '') {
     await street.fill('Test Street');
   }
 
@@ -39,7 +39,7 @@ async register(customer) {
 
   if (await state.inputValue() === '') {
     await state.fill('Almaty');
-  }
+  } */
 
   await this.page.locator('[data-test="phone"]').fill('87000000000');
   await this.page.locator('[data-test="email"]').fill(customer.email);
