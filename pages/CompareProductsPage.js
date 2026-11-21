@@ -5,10 +5,8 @@ export class CompareProductsPage {
   constructor(page) {
     this.page = page;
 
-    this.firstProduct =
-      '[data-test="product-01M5QH4EAVP48YW93XJDG173E3"]';
-    this.secondProduct =
-      '[data-test="product-01M5QH4EAY7BV54DNBFCTQ4BF9"]';
+    this.firstProduct = 'Claw Hammer';
+    this.secondProduct = 'Thor Hammer';
 
     this.addToCompareButton = '[data-test="add-to-compare"]';
     this.compareLink = '[data-test="compare-link"]';
@@ -21,24 +19,52 @@ export class CompareProductsPage {
       timeout: 60000,
     });
 
-    await this.page
-      .locator(this.firstProduct)
-      .waitFor({ state: 'visible', timeout: 15000 });
+    // Wait until at least one product is displayed.
+    await this.page.locator('[data-test^="product-"]').first().waitFor({
+      state: 'visible',
+      timeout: 15000,
+    });
   }
 
-  async addProductToComparison(productSelector) {
-    await this.page.locator(productSelector).click();
-    await this.page.locator(this.addToCompareButton).click();
-  }
+
+async addProductToComparison(productName) {
+  const product = this.page
+    .locator('a[href^="/product/"]')
+    .filter({
+      has: this.page.getByRole('heading', {
+        name: productName,
+        exact: true,
+      }),
+    });
+
+  await expect(product).toHaveCount(1);
+
+  const compareButton = product.getByRole('button', {
+    name: 'Compare',
+    exact: true,
+  });
+
+  await expect(compareButton).toBeVisible();
+  await compareButton.click();
+}
+
+
 
   async compareTwoProducts() {
+    // Add the first product.
     await this.addProductToComparison(this.firstProduct);
 
+    // Return to the homepage.
     await this.open();
 
+    // Add the second product.
     await this.addProductToComparison(this.secondProduct);
 
-    await this.page.locator(this.compareLink).click();
+    // Open the comparison page.
+    const comparisonLink = this.page.locator(this.compareLink);
+
+    await expect(comparisonLink).toBeVisible();
+    await comparisonLink.click();
   }
 
   async expectBothProductsVisible() {
@@ -47,12 +73,14 @@ export class CompareProductsPage {
   }
 
   async testDifferencesFilter() {
-    await expect(this.page.locator(this.showDifferences)).toBeVisible();
+    const differencesCheckbox = this.page.locator(this.showDifferences);
 
-    await this.page.locator(this.showDifferences).check();
-    await expect(this.page.locator(this.showDifferences)).toBeChecked();
+    await expect(differencesCheckbox).toBeVisible();
 
-    await this.page.locator(this.showDifferences).uncheck();
-    await expect(this.page.locator(this.showDifferences)).not.toBeChecked();
+    await differencesCheckbox.check();
+    await expect(differencesCheckbox).toBeChecked();
+
+    await differencesCheckbox.uncheck();
+    await expect(differencesCheckbox).not.toBeChecked();
   }
 }
