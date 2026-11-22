@@ -45,16 +45,6 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-      - name: Inspect test results
-        if: always()
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Files and folders:"
-          ls -la
-          echo "Test results:"
-          find . -maxdepth 4 -type f \( -name "*.zip" -o -name "*.png" -o -name "*.txt" \) -print   
-                
       - name: Upload test traces
         if: always()
         uses: actions/upload-artifact@v4
@@ -90,11 +80,6 @@ jobs:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
-
-      - name: Inspect downloaded reports
-        run: |
-          echo "Downloaded files:"
-          find all-blob-reports -type f -print
 
       - name: Merge reports
         run: npx playwright merge-reports --reporter html ./all-blob-reports/blob-report
