@@ -45,6 +45,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+
   merge-reports:
     name: Merge Playwright Reports
     if: always()
@@ -70,6 +71,11 @@ jobs:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
+
+      - name: Inspect downloaded reports
+        run: |
+          echo "Downloaded files:"
+          find all-blob-reports -type f -print
 
       - name: Merge reports
         run: npx playwright merge-reports --reporter html ./all-blob-reports
