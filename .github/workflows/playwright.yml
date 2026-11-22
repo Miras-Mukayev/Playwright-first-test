@@ -78,7 +78,7 @@ jobs:
           find all-blob-reports -type f -print
 
       - name: Merge reports
-        run: npx playwright merge-reports --reporter html ./all-blob-reports
+        run: npx playwright merge-reports --reporter html ./all-blob-reports/blob-report
 
       - name: Upload merged HTML report
         if: always()
