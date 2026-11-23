@@ -1,4 +1,6 @@
-This project contains automated tests using Playwright.
+[![Playwright Tests](https://github.com/Miras-Mukayev/Playwright-first-test/actions/workflows/playwright.yml/badge.svg?branch=main)](https://github.com/Miras-Mukayev/Playwright-first-test/actions/workflows/playwright.yml)
+
+CI system: GitHub Actions. I chose it because it is integrated with GitHub and runs tests automatically on pushes and pull requests.
 
 The workflow is located in `.github/workflows/playwright.yml`
 It installs dependencies and Chromium, runs tests using 4 shards, checking the tests and creates/merges test reports
